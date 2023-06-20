@@ -36,7 +36,7 @@ const account4 = {
 const accounts = [account1, account2, account3, account4];
 
 // Elements
-/* const labelWelcome = document.querySelector('.welcome');
+const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
 const labelSumIn = document.querySelector('.summary__value--in');
@@ -60,8 +60,8 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
- */
-/* const displayMovement = function (movements) {
+
+const displayMovement = function (movements) {
   containerMovements.innerHTML = ''; //It allows you to manipulate the HTML content within an element dynamically
 
   movements.forEach(function (mov, i) {
@@ -76,7 +76,14 @@ const inputClosePin = document.querySelector('.form__input--pin');
   });
 };
 displayMovement(account1.movements);
- */
+
+const calcDisplayBalance = function (movements) {
+  // a function that calculates the balance of each account and display the balance.
+  const balance = movements.reduce((acc, mov) => acc * mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+calcDisplayBalance(account1.movements);
+
 const createUsernames = function (accs) {
   // creating a function that creates the username of all the accounts in the array. This function returns an acc.username as a new property to each account . the user is gotten from the owner names of each. we then used the .tolowercase method to chanage the name to lower case and then used the .splt method to convert them into individual string in an array format . we used the map method to get the first word of each string in the new array and then use join method to join them together.
   accs.forEach(function (acc) {
@@ -93,7 +100,7 @@ const createUsernames = function (accs) {
 };
 
 createUsernames(accounts);
-console.log(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
