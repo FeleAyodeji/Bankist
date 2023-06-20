@@ -36,7 +36,7 @@ const account4 = {
 const accounts = [account1, account2, account3, account4];
 
 // Elements
-const labelWelcome = document.querySelector('.welcome');
+/* const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
 const labelSumIn = document.querySelector('.summary__value--in');
@@ -60,20 +60,40 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+ */
+/* const displayMovement = function (movements) {
+  containerMovements.innerHTML = ''; //It allows you to manipulate the HTML content within an element dynamically
 
-const displayMovement = function (movements) {
   movements.forEach(function (mov, i) {
     const type = mov > 0 ? 'withdrawal' : 'deposit';
 
     const html = ` <div class="movements__row">
-    <div class="movements__type movements__type--${type}>${i + 1} ${type}</div>
+    <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
     <div class="movements__value">${mov}</div>
   </div>`;
 
-    containerMovements.insertAdjacentElement('afterbegin', html);
+    containerMovements.insertAdjacentHTML('afterbegin', html); //The insertAdjacentHTML() method inserts HTML code into a specified position.
   });
 };
 displayMovement(account1.movements);
+ */
+const createUsernames = function (accs) {
+  // creating a function that creates the username of all the accounts in the array. This function returns an acc.username as a new property to each account . the user is gotten from the owner names of each. we then used the .tolowercase method to chanage the name to lower case and then used the .splt method to convert them into individual string in an array format . we used the map method to get the first word of each string in the new array and then use join method to join them together.
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(
+        /* function (name) {
+        return name[0];
+      } */ name => name[0]
+      )
+      .join('');
+  });
+};
+
+createUsernames(accounts);
+console.log(accounts);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
