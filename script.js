@@ -104,7 +104,7 @@ const calcDisplaySummary = function (acc) {
 };
 
 const createUsernames = function (accs) {
-  // creating a function that creates the username of all the accounts in the array. This function returns an acc.username as a new property to each account . the user is gotten from the owner names of each. we then used the .tolowercase method to chanage the name to lower case and then used the .splt method to convert them into individual string in an array format . we used the map method to get the first word of each string in the new array and then use join method to join them together.
+  // creating a function that creates the username of all the accounts in the array. This function returns an acc.username as a new property to each account. the user is gotten from the owner names of each. we then used the .tolowercase method to chanage the name to lower case and then used the .splt method to convert them into individual string in an array format. we used the map method to get the first word of each string in the new array and then use join method to join them together.
   accs.forEach(function (acc) {
     acc.username = acc.owner
       .toLowerCase()
