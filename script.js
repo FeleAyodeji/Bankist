@@ -10,6 +10,18 @@ const account1 = {
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+  movementsDates: [
+    '2023-06-04T21:31:17.178Z',
+    '2023-06-14T21:31:17.178Z',
+    '2023-06-15T21:31:17.178Z',
+    '2023-07-04T21:31:17.178Z',
+    '2023-07-05T21:31:17.178Z',
+    '2023-07-07T21:31:17.178Z',
+    '2023-07-09T21:31:17.178Z',
+    '2023-07-10T21:31:17.178Z',
+  ],
+  currency: 'EUR',
+  locale: 'pt-PT',
 };
 
 const account2 = {
@@ -61,15 +73,39 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovement = function (movements, sort = false) {
+const formatMovementDate = function (date) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const daysPassed = calcDaysPassed(new Date(), date);
+  //console.log(daysPassed);
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  else {
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+};
+
+const displayMovement = function (acc, sort = false) {
   containerMovements.innerHTML = ''; //It allows you to manipulate the HTML content within an element dynamically
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(acc.movementsDates[i]);
+    const displayDate = formatMovementDate(date);
+
     const html = ` <div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
+    <div class="movements__date">${displayDate}</div>
     <div class="movements__value">${mov.toFixed(2)}€</div>
   </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html); //The insertAdjacentHTML() method inserts HTML code into a specified position.
@@ -124,7 +160,7 @@ createUsernames(accounts);
 //Update UI
 const updateUI = function (acc) {
   //display movements
-  displayMovement(acc.movements);
+  displayMovement(acc);
 
   //display balance
   calcDisplayBalance(acc);
@@ -137,6 +173,12 @@ const updateUI = function (acc) {
 
 let currentAccount;
 
+//fake Current account logged In
+
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
 //Login button
 btnLogin.addEventListener('click', function (e) {
   //prevent  the form from submitting
@@ -148,11 +190,34 @@ btnLogin.addEventListener('click', function (e) {
   console.log(currentAccount);
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
-    //display UI and message
+    //Display UI and message
     labelWelcome.textContent = `Welcome Back ${
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+
+    //create current date and time
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long',
+    };
+    const locale = navigator.language;
+    console.log(locale);
+    labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
+      now
+    ); // using internationalizing dates to format the date to prefered country date formats
+
+    /* const day = `${now.getDate()}`.padStart(2, 0);
+    const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    const year = now.getFullYear();
+    const hour = `${now.getHours()}`.padStart(2, 0);
+    const min = `${now.getMinutes()}`.padStart(2, 0);
+    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`; */
 
     //clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -183,6 +248,10 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    //Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOstring());
+    receiverAcc.movementsDates.push(new Date().toISOstring());
+
     //update UI
     updateUI(currentAccount);
   }
@@ -195,6 +264,9 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     //add amount
     currentAccount.movements.push(amount);
+
+    //Add loan date
+    currentAccount.movementsDates.push(new Date().toISOstring());
 
     //update UI
     updateUI(currentAccount);
