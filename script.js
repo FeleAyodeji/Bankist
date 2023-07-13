@@ -48,6 +48,18 @@ const account3 = {
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  movementsDates: [
+    '2023-06-04T21:31:17.178Z',
+    '2023-06-14T21:31:17.178Z',
+    '2023-06-15T21:31:17.178Z',
+    '2023-07-04T21:31:17.178Z',
+    '2023-07-05T21:31:17.178Z',
+    '2023-07-07T21:31:17.178Z',
+    '2023-07-09T21:31:17.178Z',
+    '2023-07-10T21:31:17.178Z',
+  ],
+  currency: 'GHS',
+  locale: 'en-GH',
 };
 
 const account4 = {
@@ -55,6 +67,18 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  movementsDates: [
+    '2023-06-04T21:31:17.178Z',
+    '2023-06-14T21:31:17.178Z',
+    '2023-06-15T21:31:17.178Z',
+    '2023-07-04T21:31:17.178Z',
+    '2023-07-05T21:31:17.178Z',
+    '2023-07-07T21:31:17.178Z',
+    '2023-07-09T21:31:17.178Z',
+    '2023-07-10T21:31:17.178Z',
+  ],
+  currency: 'NGN',
+  locale: 'en-NG',
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -222,12 +246,6 @@ const startLogOutTimer = function () {
 //Event Handler
 
 let currentAccount, timer;
-
-//fake Current account logged In
-
-/* currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100; */
 
 //Login button
 btnLogin.addEventListener('click', function (e) {
