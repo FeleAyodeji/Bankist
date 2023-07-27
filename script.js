@@ -133,7 +133,8 @@ const formatCur = function (value, locale, currency) {
     style: 'currency',
     currency: currency,
   }).format(value);
-}; // this function is a global function for formatting the movement currency and balance currency of the accounts.
+};
+// this function is a global function for formatting the movement currency and balance currency of the accounts.
 
 const displayMovement = function (acc, sort = false) {
   containerMovements.innerHTML = ''; //It allows you to manipulate the HTML content within an element dynamically
